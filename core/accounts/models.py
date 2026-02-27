@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils.translation import gettext_lazy as _
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class UserManager(BaseUserManager):
@@ -60,3 +62,25 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+
+class Profile(models.Model):
+    """
+    This is the profile model. It has a one-to-one relationship with the user model, which means that each user can have only one profile. The profile model has a bio field, which is a TextField that can be blank. The __str__ method returns the email of the associated user.
+    """
+    user = models.ForeignKey(User, verbose_name=_("user"), on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=250)
+    last_name = models.CharField(max_length=250)
+    image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
+    description = models.TextField(blank=True)
+        
+
+    def __str__(self):
+        return self.user.email
+    
+
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
