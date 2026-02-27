@@ -42,11 +42,16 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """
+    This is the user model. It has an email field, a name field, and three boolean fields: is_active, is_staff, and is_superuser. The email field is unique and is used as the username field for authentication. The name field is a CharField with a maximum length of 250 characters. The is_active field indicates whether the user account is active or not. The is_staff field indicates whether the user has staff privileges or not. The is_superuser field indicates whether the user has superuser privileges or not. The USERNAME_FIELD is set to 'email', which means that the email field will be used as
+    the username for authentication. The REQUIRED_FIELDS is an empty list, which means that no additional fields are required when creating a superuser. The objects attribute is set to an instance of the UserManager class, which provides the methods for creating users and superusers.
+    """
 
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=250)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

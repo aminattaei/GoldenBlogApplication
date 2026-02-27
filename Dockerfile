@@ -7,14 +7,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 
 WORKDIR /app
 
-RUN sed -i 's/http:\/\/[a-z-A-Z0-9]*.[a-z-A-Z0-9]*.*.com/http:\/\/ir.ubuntu.sindad.cloud/g' /etc/apt/sources.list \
-    && apt-get update -y \
-    && apt-get install -y --no-install-recommends \
-        build-essential \
-        gcc \
-        python3-dev \
-        libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
+# RUN sed -i 's/http:\/\/[a-z-A-Z0-9]*.[a-z-A-Z0-9]*.*.com/http:\/\/ir.ubuntu.sindad.cloud/g' /etc/apt/sources.list
 
 COPY requirements.txt /app/
 
